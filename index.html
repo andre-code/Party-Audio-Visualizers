@@ -5,31 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Fiesta App</title>
-  <script>
-    console.log(typeof(3.13));
-    var nombre = "Andre";
-    var apellido ="Cordoba";
-    var edad = 27;
-    var nombre_completo = nombre + apellido;
-
-    var a = function (micasa){
-      var casa = micasa;
-    };
-    var b = a;
-    a = function (otracasa){
-      var casa = otracasa;
-    };;
-    console.log (a);
-    console.log (b);
-
-    console.log (typeof(a));
-    console.log (typeof(b));
-    // document.querySelector("div");
-    // document.querySelectorAll("div");
-
-  </script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="controls">
+      <button id="record"></button>
+      <button id="play"></button>
+  </div>  
+  <div id="keys-panel">
+      <div id="key-panel-a" class="key-panel">A</div>
+      <div id="key-panel-s" class="key-panel">S</div>
+      <div id="key-panel-d" class="key-panel">D</div>
+      <div id="key-panel-f" class="key-panel">F</div>
+      <div id="key-panel-g" class="key-panel">G</div>
+      <div id="key-panel-h" class="key-panel">H</div>
+      <div id="key-panel-j" class="key-panel">J</div>
+      <div id="key-panel-k" class="key-panel">K</div>
+      <div id="key-panel-l" class="key-panel">L</div>
+      <div id="key-panel-m" class="key-panel">M</div>
+    </div>
+  <div id="equalizer">
+    <div id="key-box-a" class="key-box"></div>
+    <div id="key-box-s" class="key-box"></div>
+    <div id="key-box-d" class="key-box"></div>
+    <div id="key-box-f" class="key-box"></div>
+    <div id="key-box-g" class="key-box"></div>
+    <div id="key-box-h" class="key-box"></div>
+    <div id="key-box-j" class="key-box"></div>
+    <div id="key-box-k" class="key-box"></div>
+    <div id="key-box-l" class="key-box"></div>
+    <div id="key-box-m" class="key-box"></div>
+  </div>
   
+  <audio src="sounds/fizzle.wav" class="key-a" ></audio>
+  <audio src="sounds/hat.wav" class="key-s"  ></audio>
+  <audio src="sounds/kick.wav" class="key-d"  ></audio>
+  <audio src="sounds/snare.wav" class="key-f" ></audio>
+  <audio src="sounds/snarezz.wav" class="key-g" ></audio>
+  <audio src="sounds/synth.wav" class="key-h" ></audio>
+  <audio src="sounds/vox1.wav" class="key-j" ></audio>
+  <audio src="sounds/vox2.wav" class="key-k" ></audio>
+  <audio src="sounds/vox3.wav" class="key-l" ></audio>
+  <audio src="sounds/wood.wav" class="key-m" ></audio>
+
+    <script> 
+    var songsRecorded = [];
+    var timingSong = 0;
+    var recordSong = function( key ) {
+      songsRecorded.push( key );
+    }
+    var playSong = function( keyName ) {  
+      var audioElement = document.querySelector(".key-" + keyName);
+      var divElement = document.querySelector("#key-box-" + keyName);
+
+      if(audioElement) {         
+        audioElement.currentTime = 2;
+        divElement.classList.add("gradient");
+        audioElement.play();
+
+        timingSong = audioElement.duration;
+        console.log ("duration: " + timingSong);
+        
+        setTimeout(function(){
+          divElement.classList.remove("gradient");
+        }, 500);
+      } else {
+        console.log("key don't available to play ");
+      }
+    }
+    var resetRecordSong = function() {
+      songsRecorded = [];
+      timingSong = 0;
+    }
+    var playRecordSong = function() {
+      songsRecorded.forEach(function(element) {
+        playSong ( element );
+      });
+    }
+    var getKeySong = function( keys ) {
+      var myKey = keys.key;
+      recordSong (myKey);
+      playSong ( myKey );
+    }
+
+    document.addEventListener('keydown', getKeySong);
+    document.getElementById("play").addEventListener("click", function(){
+      playRecordSong();
+    });
+    document.getElementById("record").addEventListener("click", function(){
+      resetRecordSong();
+    });
+    </script>
 </body>
 </html>
