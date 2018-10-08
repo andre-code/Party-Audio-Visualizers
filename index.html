@@ -76,11 +76,13 @@
     var playRecordSong = function() {
       songsRecorded.forEach(function(element) {
         var audioElement = document.querySelector(".key-" + element);
-        timingSong += audioElement.duration; 
-        var timeSong = timingSong*100;
-        setTimeout(function(){
-          playSong ( element, true );
-        }, timeSong);
+        if(audioElement) {   
+          timingSong += audioElement.duration; 
+          var timeSong = timingSong*100;
+          setTimeout(function(){
+            playSong ( element, true );
+          }, timeSong);
+        }
       });
       timingSong = 0;
     }
