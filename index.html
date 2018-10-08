@@ -54,18 +54,14 @@
     var recordSong = function( key ) {
       songsRecorded.push( key );
     }
-    var playSong = function( keyName ) {  
+    var playSong = function( keyName , playingSong) {  
       var audioElement = document.querySelector(".key-" + keyName);
       var divElement = document.querySelector("#key-box-" + keyName);
-
+      var timeSong = timingSong * 100;
       if(audioElement) {         
         audioElement.currentTime = 2;
         divElement.classList.add("gradient");
-        audioElement.play();
-
-        timingSong = audioElement.duration;
-        console.log ("duration: " + timingSong);
-        
+        audioElement.play();        
         setTimeout(function(){
           divElement.classList.remove("gradient");
         }, 500);
@@ -79,13 +75,19 @@
     }
     var playRecordSong = function() {
       songsRecorded.forEach(function(element) {
-        playSong ( element );
+        var audioElement = document.querySelector(".key-" + element);
+        timingSong += audioElement.duration; 
+        var timeSong = timingSong*100;
+        setTimeout(function(){
+          playSong ( element, true );
+        }, timeSong);
       });
+      timingSong = 0;
     }
     var getKeySong = function( keys ) {
       var myKey = keys.key;
       recordSong (myKey);
-      playSong ( myKey );
+      playSong ( myKey, false );
     }
 
     document.addEventListener('keydown', getKeySong);
